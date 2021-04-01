@@ -13,7 +13,7 @@
 
 -アソシエーション
  -has_many :items
- -has_one  :purchases
+ -has_many  :purchases
 
 
 
@@ -33,19 +33,19 @@
 
 -アソシエーション
  -belongs_to :user
- -belongs_to :purchases
+ -has_one :purchase
 
 ## shipping_addresses テーブル
 
-| Column           | Type       | Options           |
-| ---------------- | ---------- | ----------------- |
-| post_code        | string     | null: false       |
-| prefecture_id    | integer    | null: false       |
-| municipality     | string     | null: false       |
-| address          | string     | null: false       |
-| building_name    | string     |                   |
-| phone_number     | string     | null: false       |
-| purchase_history | references | foreign_key: true |
+| Column            | Type       | Options           |
+| ----------------- | ---------- | ----------------- |
+| post_code         | string     | null: false       |
+| prefecture_id     | integer    | null: false       |
+| municipality      | string     | null: false       |
+| address           | string     | null: false       |
+| building_name     | string     |                   |
+| phone_number      | string     | null: false       |
+| purchases_history | references | foreign_key: true |
 
 -アソシエーション
  -belongs_to :purchase
@@ -58,6 +58,6 @@
 | user        | references | foreign_key: true |
 
 -アソシエーション
- -belongs_to :user
- -belongs_to :item
- -belongs_to :shipping_address
+ -has_one :user
+ -has_one :item
+ -has_one :shipping_address
