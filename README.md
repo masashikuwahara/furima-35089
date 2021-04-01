@@ -45,7 +45,7 @@
 | address           | string     | null: false       |
 | building_name     | string     |                   |
 | phone_number      | string     | null: false       |
-| purchases_history | references | foreign_key: true |
+| purchase_history  | references | foreign_key: true |
 
 -アソシエーション
  -belongs_to :purchase
