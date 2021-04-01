@@ -1,44 +1,61 @@
 ## users テーブル
 
-| Column     | Type   | Options     |
-| ---------- | ------ | ----------- |
-| email      | string | null: false |
-| password   | string | null: false |
-| nickname   | string | null: false |
-| name       | string | null: false |
-| name_kana  | string | null: false |
-| birth      | string | null: false |
+| Column             | Type   | Options     |
+| -----------------  | ------ | ----------- |
+| email              | string | unique:true |
+| encrypted_password | string | null: false |
+| nickname           | string | null: false |
+| family_name        | string | null: false |
+| first_name         | string | null: false |
+| family_name_kana   | string | null: false |
+| first_name_kana    | string | null: false |
+| birth              | data   | null: false |
+| comment            | text   | null: false |
+
+-アソシエーション
+ -has many items
+ -has many purchase
+
+
 
 ## items テーブル
 
-| Column            | Type          | Options     |
-| ----------------  | ------------  | ----------- |
-| item_name         | string        | null: false |
-| category          | text          | null: false |
-| price             | text          | null: false |
-| status            | text          | null: false |
-| shipping_charges  | text          | null: false |
-| shipping_area     | text          | null: false |
-| days_to_ship      | text          | null: false |
-| image             | ActiveStorage |             |
-| user              | references    |             |
+| Column              | Type          | Options     |
+| ------------------- | ------------  | ----------- |
+| item_name           | string        | null: false |
+| category            | text          | null: false |
+| price               | integer       | null: false |
+| status              | text          | null: false |
+| description         | text          | null: false |
+| shipping_charge_id  | integer       | null: false |
+| shipping_area_id    | integer       | null: false |
+| days_to_ship_id     | integer       | null: false |
+| user                | references    | foreign_key |
+
+-アソシエーション
+ -belongs to shipping address 
 
 ## shipping_address テーブル
 
 | Column        | Type       | Options     |
 | ------------- | ---------- | ----------- |
-| item_name     | text       | null: false |
-| post_code     | text       | null: false |
-| pretecture    | text       | null: false |
-| municipality  | text       | null: false |
-| address       | text       | null: false |
-| building_name | text       | null: false |
-| phone_number  | text       | null: false |
-| user          | references |             |
+| post_code     | string     | null: false |
+| pretecture    | string     | null: false |
+| municipality  | string     | null: false |
+| address       | string     | null: false |
+| building_name | string     | null: false |
+| phone_number  | string     | null: false |
+| user          | references | foreign_key |
+
+-アソシエーション
+ -belongs to purchase
 
 ## purchase テーブル
 
 | Column      | Type       | Options     |
 | ----------- | ---------- | ----------- |
-| item_name   | text       | null: false |
+| item_name   | references | foreign_key |
 | user        | references |             |
+
+-アソシエーション
+ -belongs to users
