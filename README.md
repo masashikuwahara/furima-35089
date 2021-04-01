@@ -10,11 +10,10 @@
 | family_name_kana   | string | null: false              |
 | first_name_kana    | string | null: false              |
 | birth              | data   | null: false              |
-| comment            | text   | null: false              |
 
 -アソシエーション
- -has many items
- -has many purchases
+ -has_many :items
+ -has_one  :purchases
 
 
 
@@ -33,11 +32,10 @@
 | user                | references    | foreign_key: true |
 
 -アソシエーション
- -belongs to shipping address 
- -belongs to user
- -belongs to purchases
+ -belongs_to :user
+ -belongs_to :purchases
 
-## shipping_address テーブル
+## shipping_addresses テーブル
 
 | Column           | Type       | Options           |
 | ---------------- | ---------- | ----------------- |
@@ -50,16 +48,16 @@
 | purchase_history | references | foreign_key: true |
 
 -アソシエーション
- -belongs to purchase
+ -belongs_to :purchase
 
-## purchase テーブル
+## purchases テーブル
 
 | Column      | Type       | Options           |
 | ----------- | ---------- | ----------------- |
-| item_id     | references | foreign_key       |
+| item        | references | foreign_key: true |
 | user        | references | foreign_key: true |
 
 -アソシエーション
- -belongs to users
- -belongs to items
- -belongs to shipping_address
+ -belongs_to :user
+ -belongs_to :item
+ -belongs_to :shipping_address
