@@ -5,4 +5,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
          validates :nickname, presence: true, length: { minimum: 6 }
+         validates :password,:password_confirmation,format:{with: /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i}
+         
 end

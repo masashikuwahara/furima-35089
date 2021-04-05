@@ -18,10 +18,10 @@ RSpec.describe User, type: :model do
   end
   it 'メールアドレスが一意性であること' do
     @user.save
-      another_user = FactoryBot.build(:user)
-      another_user.email = @user.email
-      another_user.valid?
-      expect(another_user.errors.full_messages).to include("Email has already been taken")
+    another_user = FactoryBot.build(:user)
+    another_user.email = @user.email
+    another_user.valid?
+    expect(another_user.errors.full_messages).to include("Email has already been taken")
   end
   it 'メールアドレスは、@を含む必要があること' do
     @user.email = 'sampleemail.com'
@@ -34,25 +34,28 @@ RSpec.describe User, type: :model do
     expect(@user.errors.full_messages).to include("Password can't be blank")
   end
   it 'パスワードは、6文字以上での入力が必須であること（6文字が入力されていれば、登録が可能なこと）' do
-      @user.password = '0000000'
-      @user.password_confirmation = '0000000'
+      @user.password = '0000aaa'
+      @user.password_confirmation = '0000aaa'
       @user.valid?
       expect(@user).to be_valid
   end
   it 'パスワードが半角数字のみだと登録できない' do
     @user.password = '000000'
+    @user.password_confirmation = '000000'
     @user.valid?
     expect(@user.errors.full_messages).to include("Password is invalid")
   end
   it 'パスワードが半角英字のみだと登録できない' do
     @user.password = 'aaaaaa'
+    @user.password_confirmation = 'aaaaaa'
     @user.valid?
     expect(@user.errors.full_messages).to include("Password is invalid")
   end
   it 'パスワードとパスワード（確認用）は、値の一致が必須であること' do
-    @user.password = '000000'
-    @user.password_confirmation = '000000'
-    expect(@user).to be_valid
+    @user.password = '000aaa'
+    @user.password_confirmation = 'aaa000'
+    @user.valid?
+    expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
   end
 end
 end
