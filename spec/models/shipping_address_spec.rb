@@ -11,9 +11,9 @@ RSpec.describe UserPurchases, type: :model do
     expect(@user_purchases.errors.full_messages). to include ("Post code can't be blank")
   end
   it '配送先の情報として、都道府県が必須であること' do
-    @user_purchases.prefecture_id = 0
+    @user_purchases.prefecture_id = nil
     @user_purchases.valid?
-    expect(@user_purchases.errors.full_messages). to include ("Address is invalid. Include hyphen(-)")
+    expect(@user_purchases.errors.full_messages). to include ("Prefecture can't be blank")
   end
   it '配送先の情報として、市区町村が必須であること' do
     @user_purchases.municipality = nil
@@ -33,17 +33,17 @@ RSpec.describe UserPurchases, type: :model do
   it '配送先の情報として、郵便番号にはハイフンが必須であること' do
     @user_purchases.post_code = "0000000"
     @user_purchases.valid?
-    expect(@user_purchases.errors.full_messages). to include ("Post code is invalid. Include hyphen(-)")
+    expect(@user_purchases.errors.full_messages). to include ("Post code is invalid")
   end
   it '電話番号にはハイフンは不要であること' do
     @user_purchases.phone_number = "000-0000-0000"
     @user_purchases.valid?
-    expect(@user_purchases.errors.full_messages). to include ("Phone number is out of setting range")
+    expect(@user_purchases.errors.full_messages). to include ("Phone number is invalid")
   end
   it '電話番号は11桁以内であること' do
     @user_purchases.phone_number = "000000000000"
     @user_purchases.valid?
-    expect(@user_purchases.errors.full_messages). to include ("Phone number is out of setting range")
+    expect(@user_purchases.errors.full_messages). to include ("Phone number is invalid")
   end
 end
 
