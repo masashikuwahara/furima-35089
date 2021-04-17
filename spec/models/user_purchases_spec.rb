@@ -14,6 +14,10 @@ RSpec.describe UserPurchases, type: :model do
   it '全ての値が正常に入力されていれば購入できる' do
       expect(@user_purchases).to be_valid
     end
+    it '建物名がなくても購入できる' do
+      @user_purchases.building_name = nil
+      expect(@user_purchases).to be_valid
+    end
   end
   context '商品が購入できない時' do
   it '配送先の情報として、郵便番号が必須であること' do
@@ -77,6 +81,11 @@ RSpec.describe UserPurchases, type: :model do
     expect(@user_purchases.errors.full_messages).to include("Phone number is invalid")
   end
   it '都道府県が"--"が選択されている場合は登録できないこと' do
+    @user_purchases.prefecture_id = 1
+    @user_purchases.valid?
+    expect(@user_purchases.errors.full_messages).to include("Prefecture must be other than 1")
+  end
+  it 'prefecture_idが１以外でないと購入できない' do
     @user_purchases.prefecture_id = 1
     @user_purchases.valid?
     expect(@user_purchases.errors.full_messages).to include("Prefecture must be other than 1")
