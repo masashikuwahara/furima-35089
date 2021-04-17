@@ -4,9 +4,10 @@ RSpec.describe UserPurchases, type: :model do
 
   before do
 
-    @item = FactoryBot.build(:item)
-    @user = FactoryBot.build(:user)
+    @item = FactoryBot.create(:item)
+    @user = FactoryBot.create(:user)
     @user_purchases = FactoryBot.build(:user_purchases,item_id:@item,user_id:@user)
+    sleep(1)
   end
 
  describe '商品購入' do
