@@ -1,10 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe UserPurchases, type: :model do
+
   before do
-    @user_purchases = FactoryBot.build(:user_purchases)
+
+    @item = FactoryBot.build(:item)
+    @user = FactoryBot.build(:user)
+    @user_purchases = FactoryBot.build(:user_purchases,item_id:@item,user_id:@user)
   end
 
+ describe '商品購入' do
+  context '商品が購入できる時' do
+  it '全ての値が正常に入力されていれば購入できる' do
+      expect(@user_purchases).to be_valid
+    end
+  end
+  context '商品が購入できない時' do
   it '配送先の情報として、郵便番号が必須であること' do
     @user_purchases.post_code = nil
     @user_purchases.valid?
@@ -50,5 +61,26 @@ RSpec.describe UserPurchases, type: :model do
     @user_purchases.valid?
     expect(@user_purchases.errors.full_messages).to include("Token can't be blank")
   end
+  it 'user_idが空では登録できない' do
+    @user_purchases.user_id = nil
+    @user_purchases.valid?
+    expect(@user_purchases.errors.full_messages).to include("User can't be blank")
+  end
+  it 'item_idが空では登録できない' do
+    @user_purchases.item_id = nil
+    @user_purchases.valid?
+    expect(@user_purchases.errors.full_messages).to include("Item can't be blank")
+  end
+  it '電話番号が英数混合では登録できないこと' do
+    @user_purchases.phone_number = "000000aaaaa"
+    @user_purchases.valid?
+    expect(@user_purchases.errors.full_messages).to include("Phone number is invalid")
+  end
+  it '都道府県が"--"が選択されている場合は登録できないこと' do
+    @user_purchases.prefecture_id = 1
+    @user_purchases.valid?
+    expect(@user_purchases.errors.full_messages).to include("Prefecture must be other than 1")
+  end
 end
-
+end
+end

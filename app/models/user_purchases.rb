@@ -1,6 +1,6 @@
 class UserPurchases
   include ActiveModel::Model
-  attr_accessor :user_id, :item_name_id, :post_code, :prefecture_id, :municipality, :address, :building_name, :phone_number, :purchases_id, :item_id, :user_id, :token
+  attr_accessor :post_code, :prefecture_id, :municipality, :address, :building_name, :phone_number, :item_id, :user_id, :token
 
   with_options presence: true do
     validates :post_code, format: { with: /\A\d{3}[-]\d{4}\z/}
@@ -10,6 +10,7 @@ class UserPurchases
     validates :phone_number,format: { with: /\A\d{10,11}\z/}
     validates :token, presence: true
     validates :user_id
+    validates :item_id
   end
 
   def save

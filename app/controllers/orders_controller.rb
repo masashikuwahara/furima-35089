@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item
-  before_action :move_to_index, only: [:index]
+  before_action :move_to_index, only: [:index, :create]
 
   def index
     @order = UserPurchases.new
@@ -21,7 +21,7 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:user_purchases).permit(:post_code, :prefecture_id, :municipality, :address, :building_name, :phone_number, :purchase_id).merge(user_id: current_user.id, item_id: params[:item_id],token: params[:token])
+    params.require(:user_purchases).permit(:post_code, :prefecture_id, :municipality, :address, :building_name, :phone_number).merge(user_id: current_user.id, item_id: params[:item_id],token: params[:token])
   end
 
   def set_item
@@ -38,7 +38,7 @@ class OrdersController < ApplicationController
   end
 
   def move_to_index
-    if user_signed_in? && current_user.id == @item.user_id
+    if @item.purchase.present?||current_user.id == @item.user_id
       redirect_to root_path
     end
   end
