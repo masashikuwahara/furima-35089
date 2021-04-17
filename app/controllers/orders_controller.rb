@@ -9,6 +9,7 @@ class OrdersController < ApplicationController
   def create 
     @order = UserPurchases.new(order_params)
     if @order.valid?
+      pay_item
       @order.save
       redirect_to root_path
     else
@@ -19,14 +20,20 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:user_purchases).permit(:post_code, :prefecture_id, :municipality, :address, :building_name, :phone_number, :purchase_id).merge(user_id: current_user.id, item_id: params[:item_id])
+    params.require(:user_purchases).permit(:post_code, :prefecture_id, :municipality, :address, :building_name, :phone_number, :purchase_id).merge(user_id: current_user.id, item_id: params[:item_id],token: params[:token])
   end
 
   def set_item
     @item =  Item.find(params[:item_id])
   end
   
+  def pay_item
+    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
+    Payjp::Charge.create(
+      amount: @item[:price],
+      card: order_params[:token],
+      currency: 'jpy'
+    )
+  end
+
 end
-#インデックスアクションに @order を定義する
-#order_paramsに.require(:モデル名)を追記する
-#order_paramsの.mergeメソッドにitem_idというキーと値を追記する
