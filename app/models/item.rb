@@ -14,9 +14,10 @@ class Item < ApplicationRecord
     validates :image
     validates :item_name
     validates :description
-    validates :price, numericality: {with: /\A[0-9]+\z/}
+    
     validates :price, numericality: {greater_than_or_equal_to: 300, less_than_or_equal_to: 9999999, message: "is invalid"}
   end
   
   validates :category_id, :status_id, :shipping_charge_id, :shipping_area_id, :days_to_ship_id, numericality: { other_than: 1, message: 'Select' }
+  validates :price, numericality: {with: /\A[0-9]+\z/}
 end
