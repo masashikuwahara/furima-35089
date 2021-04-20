@@ -9,6 +9,8 @@ class Item < ApplicationRecord
   belongs_to :user
   has_one_attached :image
   has_one :purchase
+  has_many :item_tag_relations
+  has_many :tags, through: :tweet_tag_relations
 
   with_options presence: true do
     validates :image
